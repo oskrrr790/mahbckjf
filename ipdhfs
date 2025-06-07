@@ -95,7 +95,7 @@ local function fastReb()
         local strengthTarget = 5000 + (rebirths * 2600)
 
         while isRunning and player.leaderstats.Strength.Value < strengthTarget do
-            local repsToDo = player.MembershipType == Enum.MembershipType.Premium and 9 or 14
+            local repsToDo = player.MembershipType == Enum.MembershipType.Premium and 10 or 14
             for _ = 1, repsToDo do
                 muscleEvent:FireServer("rep")
             end
