@@ -365,14 +365,6 @@ end)
 
 features:AddLabel("Pets").TextSize = 20
 
-local switch = features:AddSwitch("Show Pets", function(bool)
-    local player = game:GetService("Players").LocalPlayer
-    if player:FindFirstChild("hidePets") then
-        player.hidePets.Value = bool
-    end
-end)
-switch:Set(true)
-
 features:AddButton("Equip Swift Samurai", function()
     unequipPets()
     equipPetsByName("Swift Samurai")
