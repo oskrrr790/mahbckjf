@@ -89,13 +89,13 @@ local isRunning = false
 local function fastReb()
     while isRunning do
         equipPetsByName("Swift Samurai")
-        task.wait(0.4) -- Kurze Pause zwischen Pet-Wechsel
+        task.wait(0.4) 
 
         local rebirths = player.leaderstats.Rebirths.Value
         local strengthTarget = 5000 + (rebirths * 2600)
 
         while isRunning and player.leaderstats.Strength.Value < strengthTarget do
-            local repsToDo = player.MembershipType == Enum.MembershipType.Premium and 12 or 14
+            local repsToDo = player.MembershipType == Enum.MembershipType.Premium and 10 or 14
             for _ = 1, repsToDo do
                 muscleEvent:FireServer("rep")
             end
