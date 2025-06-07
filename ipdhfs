@@ -169,7 +169,7 @@ end, {
 local function fastRepLoop()
     while runFastRep do
         local startTime = tick()
-        while tick() - startTime < 1 and runFastRep do
+        while tick() - startTime < 0.75 and runFastRep do
             for i = 1, repsPerTick do
                 muscleEvent:FireServer("rep")
             end
