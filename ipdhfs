@@ -517,21 +517,20 @@ local function formatNumber(number)
     number = math.abs(number)
 
     if number >= 1e15 then
-        return (isNegative and "-" or "") .. string.format("%.1fQa", number / 1e15)
+        return (isNegative and "-" or "") .. string.format("%.2fQa", number / 1e15)
     elseif number >= 1e12 then
-        return (isNegative and "-" or "") .. string.format("%.1fT", number / 1e12)
+        return (isNegative and "-" or "") .. string.format("%.2fT", number / 1e12)
     elseif number >= 1e9 then
-        return (isNegative and "-" or "") .. string.format("%.1fB", number / 1e9)
+        return (isNegative and "-" or "") .. string.format("%.2fB", number / 1e9)
     elseif number >= 1e6 then
-        return (isNegative and "-" or "") .. string.format("%.1fM", number / 1e6)
+        return (isNegative and "-" or "") .. string.format("%.2fM", number / 1e6)
     elseif number >= 1e3 then
-        return (isNegative and "-" or "") .. string.format("%.1fK", number / 1e3)
+        return (isNegative and "-" or "") .. string.format("%.2fK", number / 1e3)
     else
-        return (isNegative and "-" or "") .. tostring(number)
+        return (isNegative and "-" or "") .. string.format("%.2f", number)
     end
 end
 
--- GUI Labels
 local timeLabel = features:AddLabel("⏱️Time:")
 timeLabel.TextSize = 24
 timeLabel.Font = Enum.Font.PatrickHand
@@ -582,13 +581,11 @@ sessionDurabilityLabel.Font = Enum.Font.PatrickHand
 sessionRebirthsLabel.TextSize = 20
 sessionRebirthsLabel.Font = Enum.Font.PatrickHand
 
--- Initial values
 local startTime = tick()
 local initialStrength = strengthStat.Value
 local initialDurability = durabilityStat.Value
 local initialRebirths = rebirthsStat.Value
 
--- Update Loop
 task.spawn(function()
     local lastUpdate = 0
 
@@ -636,9 +633,9 @@ task.spawn(function()
             local projectedStrength = math.floor(strengthPerSecond * secondsPerDay)
             local projectedDurability = math.floor(durabilityPerSecond * secondsPerDay)
 
-            projectedRebirthsLabel.Text = "Rebirth Pace: " .. formatNumber(rebirthsPerHour) .. " / h | " .. formatNumber(projectedRebirths) .. " / 24h"
-            projectedStrengthLabel.Text = "Strength Pace: " .. formatNumber(strengthPerHour) .. " / h | " .. formatNumber(projectedStrength) .. " / 24h"
-            projectedDurabilityLabel.Text = "Durability Pace: " .. formatNumber(durabilityPerHour) .. " / h | " .. formatNumber(projectedDurability) .. " / 24h"
+            projectedRebirthsLabel.Text = "Rebirth Pace: " .. formatNumber(rebirthsPerHour) .. " /h | " .. formatNumber(projectedRebirths) .. " /24h"
+            projectedStrengthLabel.Text = "Strength Pace: " .. formatNumber(strengthPerHour) .. " /h | " .. formatNumber(projectedStrength) .. " /24h"
+            projectedDurabilityLabel.Text = "Durability Pace: " .. formatNumber(durabilityPerHour) .. " /h | " .. formatNumber(projectedDurability) .. " /24h"
         end
 
         task.wait(0.005) 
