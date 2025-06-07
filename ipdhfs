@@ -531,7 +531,7 @@ local function formatNumber(number)
     end
 end
 
-
+-- GUI Labels
 local timeLabel = features:AddLabel("⏱️Time:")
 timeLabel.TextSize = 24
 timeLabel.Font = Enum.Font.PatrickHand
@@ -540,15 +540,15 @@ local stopwatchLabel = features:AddLabel("0d 0h 0m 0s")
 stopwatchLabel.TextSize = 20
 stopwatchLabel.Font = Enum.Font.PatrickHand
 
-local projectedRebirthsLabel = features:AddLabel("📈Projected Rebirths in 24h: 0 /24h")
+local projectedRebirthsLabel = features:AddLabel("📈Projected Rebirths: 0 /h | 0 /24h")
 projectedRebirthsLabel.TextSize = 20
 projectedRebirthsLabel.Font = Enum.Font.PatrickHand
 
-local projectedStrengthLabel = features:AddLabel("📈Projected Strength in 24h: 0 /24h")
+local projectedStrengthLabel = features:AddLabel("📈Projected Strength: 0 /h | 0 /24h")
 projectedStrengthLabel.TextSize = 20
 projectedStrengthLabel.Font = Enum.Font.PatrickHand
 
-local projectedDurabilityLabel = features:AddLabel("📈Projected Durability in 24h: 0 /24h")
+local projectedDurabilityLabel = features:AddLabel("📈Projected Durability: 0 /h | 0 /24h")
 projectedDurabilityLabel.TextSize = 20
 projectedDurabilityLabel.Font = Enum.Font.PatrickHand
 
@@ -567,10 +567,6 @@ durabilityLabel.Font = Enum.Font.PatrickHand
 rebirthsLabel.TextSize = 20
 rebirthsLabel.Font = Enum.Font.PatrickHand
 
-local sessionStrength = strengthStat.Value
-local sessionDurability = durabilityStat.Value
-local sessionRebirths = rebirthsStat.Value
-
 local sessionLabel = features:AddLabel("🕹️Session:")
 sessionLabel.TextSize = 24
 sessionLabel.Font = Enum.Font.PatrickHand
@@ -586,12 +582,13 @@ sessionDurabilityLabel.Font = Enum.Font.PatrickHand
 sessionRebirthsLabel.TextSize = 20
 sessionRebirthsLabel.Font = Enum.Font.PatrickHand
 
+-- Initial values
 local startTime = tick()
-
 local initialStrength = strengthStat.Value
 local initialDurability = durabilityStat.Value
 local initialRebirths = rebirthsStat.Value
 
+-- Update Loop
 task.spawn(function()
     local lastUpdate = 0
 
@@ -609,13 +606,9 @@ task.spawn(function()
         local currentRebirths = rebirthsStat.Value
         local currentDurability = durabilityStat.Value
 
-        local formattedStrength = formatNumber(currentStrength)
-        local formattedRebirths = formatNumber(currentRebirths)
-        local formattedDurability = formatNumber(currentDurability)
-
-        strengthLabel.Text = "Strength: " .. formattedStrength
-        durabilityLabel.Text = "Durability: " .. formattedDurability
-        rebirthsLabel.Text = "Rebirths: " .. formattedRebirths
+        strengthLabel.Text = "Strength: " .. formatNumber(currentStrength)
+        durabilityLabel.Text = "Durability: " .. formatNumber(currentDurability)
+        rebirthsLabel.Text = "Rebirths: " .. formatNumber(currentRebirths)
 
         local sessionStrengthDelta = currentStrength - initialStrength
         local sessionDurabilityDelta = currentDurability - initialDurability
@@ -632,18 +625,26 @@ task.spawn(function()
             local strengthPerSecond = sessionStrengthDelta / elapsedTime
             local durabilityPerSecond = sessionDurabilityDelta / elapsedTime
 
-            local projectedRebirths = math.floor(rebirthsPerSecond * 86400)
-            local projectedStrength = math.floor(strengthPerSecond * 86400)
-            local projectedDurability = math.floor(durabilityPerSecond * 86400)
+            local secondsPerHour = 3600
+            local secondsPerDay = 86400
 
-            projectedRebirthsLabel.Text = "Rebirth Pace: " .. formatNumber(projectedRebirths) .. " / 24h"
-            projectedStrengthLabel.Text = "Strength Pace: " .. formatNumber(projectedStrength) .. " / 24h"
-            projectedDurabilityLabel.Text = "Durability Pace: " .. formatNumber(projectedDurability) .. " / 24h"
+            local rebirthsPerHour = math.floor(rebirthsPerSecond * secondsPerHour)
+            local strengthPerHour = math.floor(strengthPerSecond * secondsPerHour)
+            local durabilityPerHour = math.floor(durabilityPerSecond * secondsPerHour)
+
+            local projectedRebirths = math.floor(rebirthsPerSecond * secondsPerDay)
+            local projectedStrength = math.floor(strengthPerSecond * secondsPerDay)
+            local projectedDurability = math.floor(durabilityPerSecond * secondsPerDay)
+
+            projectedRebirthsLabel.Text = "Rebirth Pace: " .. formatNumber(rebirthsPerHour) .. " / h | " .. formatNumber(projectedRebirths) .. " / 24h"
+            projectedStrengthLabel.Text = "Strength Pace: " .. formatNumber(strengthPerHour) .. " / h | " .. formatNumber(projectedStrength) .. " / 24h"
+            projectedDurabilityLabel.Text = "Durability Pace: " .. formatNumber(durabilityPerHour) .. " / h | " .. formatNumber(projectedDurability) .. " / 24h"
         end
 
-        task.wait(0.001)
+        task.wait(0.005) 
     end
 end)
+
 
 local features = window:AddTab("Info")
 features:Show()
