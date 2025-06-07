@@ -99,7 +99,7 @@ local function fastReb()
             for _ = 1, repsToDo do
                 muscleEvent:FireServer("rep")
             end
-            task.wait(0.02) -- kurze Pause, um die Serverlast nicht zu überlasten
+            task.wait(0.02)
         end
 
         if player.leaderstats.Strength.Value >= strengthTarget then
