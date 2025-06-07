@@ -513,20 +513,24 @@ local rebirthsStat = leaderstats:WaitForChild("Rebirths")
 local durabilityStat = player:WaitForChild("Durability")
 
 local function formatNumber(number)
+    local isNegative = number < 0  -- Überprüfen, ob die Zahl negativ ist
+    number = math.abs(number)  -- Den absoluten Wert der Zahl nehmen
+
     if number >= 1e15 then
-        return string.format("%.1fQa", number / 1e15)
+        return (isNegative and "-" or "") .. string.format("%.1fQa", number / 1e15)
     elseif number >= 1e12 then
-        return string.format("%.1fT", number / 1e12)
+        return (isNegative and "-" or "") .. string.format("%.1fT", number / 1e12)
     elseif number >= 1e9 then
-        return string.format("%.1fB", number / 1e9)
+        return (isNegative and "-" or "") .. string.format("%.1fB", number / 1e9)
     elseif number >= 1e6 then
-        return string.format("%.1fM", number / 1e6)
+        return (isNegative and "-" or "") .. string.format("%.1fM", number / 1e6)
     elseif number >= 1e3 then
-        return string.format("%.1fK", number / 1e3)
+        return (isNegative and "-" or "") .. string.format("%.1fK", number / 1e3)
     else
-        return tostring(number)
+        return (isNegative and "-" or "") .. tostring(number)
     end
 end
+
 
 local timeLabel = features:AddLabel("⏱️Time:")
 timeLabel.TextSize = 24
