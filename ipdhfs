@@ -131,6 +131,14 @@ features:AddLabel("--- Dont use Anti Lag for Rebirthing ---").TextSize = 17
 
 features:AddLabel("Pets").TextSize = 20
 
+local switch = features:AddSwitch("Show Pets", function(bool)
+    local player = game:GetService("Players").LocalPlayer
+    if player:FindFirstChild("hidePets") then
+        player.hidePets.Value = bool
+    end
+end)
+switch:Set(true)
+
 features:AddButton("Equip Swift Samurai", function()
     unequipPets()
     equipPetsByName("Swift Samurai")
@@ -356,6 +364,14 @@ features:AddButton("Anti Lag", function()
 end)
 
 features:AddLabel("Pets").TextSize = 20
+
+local switch = features:AddSwitch("Show Pets", function(bool)
+    local player = game:GetService("Players").LocalPlayer
+    if player:FindFirstChild("hidePets") then
+        player.hidePets.Value = bool
+    end
+end)
+switch:Set(true)
 
 features:AddButton("Equip Swift Samurai", function()
     unequipPets()
