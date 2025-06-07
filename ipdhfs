@@ -30,7 +30,7 @@ local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tuzur
 
 local window = library:AddWindow("Silence | Paid", {
     main_color = mainColor,
-    min_size = Vector2.new(505, 360),
+    min_size = Vector2.new(500, 360),
     can_resize = false,
 })
 
