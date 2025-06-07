@@ -30,7 +30,7 @@ local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tuzur
 
 local window = library:AddWindow("Silence | Paid", {
     main_color = mainColor,
-    min_size = Vector2.new(420, 360),
+    min_size = Vector2.new(505, 360),
     can_resize = false,
 })
 
@@ -58,7 +58,7 @@ end)
 local features = window:AddTab("Rebirthing")
 features:Show()
 
-features:AddLabel("Farming").TextSize = 22
+features:AddLabel("Farming").TextSize = 20
 
 local player = game.Players.LocalPlayer
 local muscleEvent = player:WaitForChild("muscleEvent")
@@ -129,7 +129,7 @@ end)
 
 features:AddLabel("--- Dont use Anti Lag for Rebirthing ---").TextSize = 17
 
-features:AddLabel("Pets").TextSize = 22
+features:AddLabel("Pets").TextSize = 20
 
 features:AddButton("Equip Swift Samurai", function()
     unequipPets()
@@ -144,7 +144,7 @@ end)
 local features = window:AddTab("Fast Farming") 
 features:Show()
 
-features:AddLabel("Farming").TextSize = 22
+features:AddLabel("Farming").TextSize = 20
 
 local player = game.Players.LocalPlayer
 local muscleEvent = player:WaitForChild("muscleEvent")
@@ -191,7 +191,7 @@ features:AddSwitch("Fast Rep", function(state)
     end
 end)
 
-features:AddLabel("Misc").TextSize = 22
+features:AddLabel("Misc").TextSize = 20
 
 local function activateProteinEgg()
     local tool = player.Character:FindFirstChild("Protein Egg") or player.Backpack:FindFirstChild("Protein Egg")
@@ -234,7 +234,7 @@ task.spawn(function()
     while true do
         if running then
             activateShake()
-            task.wait(1800)
+            task.wait(900)
         else
             task.wait(1)
         end
@@ -355,7 +355,7 @@ features:AddButton("Anti Lag", function()
     darkenSky()
 end)
 
-features:AddLabel("Pets").TextSize = 22
+features:AddLabel("Pets").TextSize = 20
 
 features:AddButton("Equip Swift Samurai", function()
     unequipPets()
@@ -370,7 +370,7 @@ end)
 local features = window:AddTab("Farming") 
 features:Show() 
 
-features:AddLabel("Misc").TextSize = 22
+features:AddLabel("Misc").TextSize = 20
 
 local switch = features:AddSwitch("Auto Lift (Slow its the Gamepass)", function(bool)
     local player = game:GetService("Players").LocalPlayer
@@ -380,7 +380,7 @@ local switch = features:AddSwitch("Auto Lift (Slow its the Gamepass)", function(
 end)
 switch:Set(false)
 
-features:AddLabel("Machines").TextSize = 22
+features:AddLabel("Machines").TextSize = 20
 
 local VirtualInputManager = game:GetService("VirtualInputManager")
 
@@ -461,10 +461,98 @@ features:AddButton("Legends Pull Up",function()
     VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
 end)
 
+local features = window:AddTab("Inv Cleaner")
+
+features:AddLabel("Misc").TextSize = 20
+
+local function activateProteinEgg()
+    local tool = player.Character:FindFirstChild("Protein Egg") or player.Backpack:FindFirstChild("Protein Egg")
+    if tool then
+        muscleEvent:FireServer("proteinEgg", tool)
+    end
+end
+
+local running = false
+
+task.spawn(function()
+    while true do
+        if running then
+            activateProteinEgg()
+            task.wait(0.35)
+        else
+            task.wait(1)
+        end
+    end
+end)
+
+local switch = features:AddSwitch("Egg Devour", function(state)
+    running = state
+    if state then
+        activateProteinEgg()
+    end
+end)
+switch:Set(false)
+
+features:AddLabel("Main").TextSize = 20
+
+local itemList = {
+    "Tropical Shake",
+    "Energy Shake",
+    "Protein Bar",
+    "TOUGH Bar",
+    "Protein Shake",
+    "ULTRA Shake",
+    "Energy Bar"
+}
+
+-- Konvertiert z. B. "Protein Bar" → "proteinBar"
+local function formatEventName(itemName)
+    local parts = {}
+    for word in itemName:gmatch("%S+") do
+        table.insert(parts, word:lower())
+    end
+    for i = 2, #parts do
+        parts[i] = parts[i]:sub(1,1):upper() .. parts[i]:sub(2)
+    end
+    return table.concat(parts)
+end
+
+local function activateItems()
+    for _, itemName in ipairs(itemList) do
+        local tool = player.Character:FindFirstChild(itemName) or player.Backpack:FindFirstChild(itemName)
+        if tool then
+            local eventName = formatEventName(itemName) -- z. B. "Protein Bar" → "proteinBar"
+            muscleEvent:FireServer(eventName, tool)
+        end
+    end
+end
+
+local running = false
+
+task.spawn(function()
+    while true do
+        if running then
+            activateItems()
+            task.wait(0.2)
+        else
+            task.wait(1)
+        end
+    end
+end)
+
+local switch = features:AddSwitch("Eat Everything", function(state)
+    running = state
+    if state then
+        activateItems()
+    end
+end)
+switch:Set(false)
+
+
 local features = window:AddTab("Teleports") 
 features:Show() 
 
-features:AddLabel("Main").TextSize = 22
+features:AddLabel("Main").TextSize = 20
 
 features:AddButton("Tiny Island",function()
     local player = game.Players.LocalPlayer
@@ -567,15 +655,15 @@ local stopwatchLabel = features:AddLabel("0d 0h 0m 0s")
 stopwatchLabel.TextSize = 20
 stopwatchLabel.Font = Enum.Font.PatrickHand
 
-local projectedRebirthsLabel = features:AddLabel("📈Projected Rebirths: 0 /h | 0 /24h")
+local projectedRebirthsLabel = features:AddLabel("📈Projected Rebirths: 0 /Hour | 0 /Day")
 projectedRebirthsLabel.TextSize = 20
 projectedRebirthsLabel.Font = Enum.Font.PatrickHand
 
-local projectedStrengthLabel = features:AddLabel("📈Projected Strength: 0 /h | 0 /24h")
+local projectedStrengthLabel = features:AddLabel("📈Projected Strength: 0 /Hour | 0 /Day")
 projectedStrengthLabel.TextSize = 20
 projectedStrengthLabel.Font = Enum.Font.PatrickHand
 
-local projectedDurabilityLabel = features:AddLabel("📈Projected Durability: 0 /h | 0 /24h")
+local projectedDurabilityLabel = features:AddLabel("📈Projected Durability: 0 /Hour | 0 /Day")
 projectedDurabilityLabel.TextSize = 20
 projectedDurabilityLabel.Font = Enum.Font.PatrickHand
 
@@ -662,4 +750,4 @@ features:AddLabel("")
 features:AddLabel("")
 features:AddLabel("")
 features:AddLabel("")
-features:AddLabel("SILENCE // PAID VERSION").TextSize = 45
+features:AddLabel("SILENCE // PAID VERSION").TextSize = 56
