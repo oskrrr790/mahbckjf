@@ -1,3 +1,4 @@
+
 local whitelistURL = "https://raw.githubusercontent.com/tuzurenard435/tuttuttutwl/refs/heads/main/whitelist.lua"
 local usercolorsURL = "https://raw.githubusercontent.com/tuzurenard435/tuttuttutwl/refs/heads/main/usercolors.lua"
 
@@ -29,7 +30,7 @@ local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tuzur
 
 local window = library:AddWindow("Silence | Paid", {
     main_color = mainColor,
-    min_size = Vector2.new(420, 400),
+    min_size = Vector2.new(420, 360),
     can_resize = false,
 })
 
@@ -216,6 +217,34 @@ local switch = features:AddSwitch("Auto Egg", function(state)
     running = state
     if state then
         activateProteinEgg()
+    end
+end)
+switch:Set(false)
+
+local function activateShake()
+    local tool = player.Character:FindFirstChild("Tropical Shake") or player.Backpack:FindFirstChild("Tropical Shake")
+    if tool then
+        muscleEvent:FireServer("tropicalShake", tool)
+    end
+end
+
+local running = false
+
+task.spawn(function()
+    while true do
+        if running then
+            activateShake()
+            task.wait(1800)
+        else
+            task.wait(1)
+        end
+    end
+end)
+
+local switch = features:AddSwitch("Auto Shake", function(state)
+    running = state
+    if state then
+        activateShake()
     end
 end)
 switch:Set(false)
@@ -550,35 +579,23 @@ local projectedDurabilityLabel = features:AddLabel("📈Projected Durability: 0 
 projectedDurabilityLabel.TextSize = 20
 projectedDurabilityLabel.Font = Enum.Font.PatrickHand
 
+features:AddLabel("").TextSize = 10
+
 local statsLabel = features:AddLabel("📊Stats:")
 statsLabel.TextSize = 24
 statsLabel.Font = Enum.Font.PatrickHand
 
-local strengthLabel = features:AddLabel("Strength: 0")
-local durabilityLabel = features:AddLabel("Durability: 0")
-local rebirthsLabel = features:AddLabel("Rebirths: 0")
-
+local strengthLabel = features:AddLabel("Strength: 0 | Gained: 0")
 strengthLabel.TextSize = 20
 strengthLabel.Font = Enum.Font.PatrickHand
+
+local durabilityLabel = features:AddLabel("Durability: 0 | Gained: 0")
 durabilityLabel.TextSize = 20
 durabilityLabel.Font = Enum.Font.PatrickHand
+
+local rebirthsLabel = features:AddLabel("Rebirths: 0 | Gained: 0")
 rebirthsLabel.TextSize = 20
 rebirthsLabel.Font = Enum.Font.PatrickHand
-
-local sessionLabel = features:AddLabel("🕹️Session:")
-sessionLabel.TextSize = 24
-sessionLabel.Font = Enum.Font.PatrickHand
-
-local sessionStrengthLabel = features:AddLabel("Gained Strength: 0")
-local sessionDurabilityLabel = features:AddLabel("Gained Durability: 0")
-local sessionRebirthsLabel = features:AddLabel("Gained Rebirths: 0")
-
-sessionStrengthLabel.TextSize = 20
-sessionStrengthLabel.Font = Enum.Font.PatrickHand
-sessionDurabilityLabel.TextSize = 20
-sessionDurabilityLabel.Font = Enum.Font.PatrickHand
-sessionRebirthsLabel.TextSize = 20
-sessionRebirthsLabel.Font = Enum.Font.PatrickHand
 
 local startTime = tick()
 local initialStrength = strengthStat.Value
@@ -602,17 +619,13 @@ task.spawn(function()
         local currentRebirths = rebirthsStat.Value
         local currentDurability = durabilityStat.Value
 
-        strengthLabel.Text = "Strength: " .. formatNumber(currentStrength)
-        durabilityLabel.Text = "Durability: " .. formatNumber(currentDurability)
-        rebirthsLabel.Text = "Rebirths: " .. formatNumber(currentRebirths)
-
         local sessionStrengthDelta = currentStrength - initialStrength
         local sessionDurabilityDelta = currentDurability - initialDurability
         local sessionRebirthsDelta = currentRebirths - initialRebirths
 
-        sessionStrengthLabel.Text = "Gained Strength: " .. formatNumber(sessionStrengthDelta)
-        sessionDurabilityLabel.Text = "Gained Durability: " .. formatNumber(sessionDurabilityDelta)
-        sessionRebirthsLabel.Text = "Gained Rebirths: " .. formatNumber(sessionRebirthsDelta)
+        strengthLabel.Text = "Strength: " .. formatNumber(currentStrength) .. " | Gained: " .. formatNumber(sessionStrengthDelta)
+        durabilityLabel.Text = "Durability: " .. formatNumber(currentDurability) .. " | Gained: " .. formatNumber(sessionDurabilityDelta)
+        rebirthsLabel.Text = "Rebirths: " .. formatNumber(currentRebirths) .. " | Gained: " .. formatNumber(sessionRebirthsDelta)
 
         if currentTime - lastUpdate >= 6 then
             lastUpdate = currentTime
@@ -637,10 +650,9 @@ task.spawn(function()
             projectedDurabilityLabel.Text = "Durability Pace: " .. formatNumber(durabilityPerHour) .. "/h | " .. formatNumber(projectedDurability) .. "/24h"
         end
 
-        task.wait(0.005) 
+        task.wait(0.05)
     end
 end)
-
 
 local features = window:AddTab("Info")
 features:Show()
