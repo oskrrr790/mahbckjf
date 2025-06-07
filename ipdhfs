@@ -513,8 +513,8 @@ local rebirthsStat = leaderstats:WaitForChild("Rebirths")
 local durabilityStat = player:WaitForChild("Durability")
 
 local function formatNumber(number)
-    local isNegative = number < 0  -- Überprüfen, ob die Zahl negativ ist
-    number = math.abs(number)  -- Den absoluten Wert der Zahl nehmen
+    local isNegative = number < 0
+    number = math.abs(number)
 
     if number >= 1e15 then
         return (isNegative and "-" or "") .. string.format("%.1fQa", number / 1e15)
