@@ -128,8 +128,6 @@ local switch = features:AddSwitch("Fast Rebirth", function(bool)
     end
 end)
 
-features:AddLabel("--- Dont use Anti Lag for Rebirthing ---").TextSize = 17
-
 features:AddLabel("Pets").TextSize = 20
 
 local switch = features:AddSwitch("Show Pets", function(bool)
