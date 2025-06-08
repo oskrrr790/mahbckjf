@@ -94,7 +94,7 @@ local function fastReb()
         task.wait(0.4) 
 
         local rebirths = player.leaderstats.Rebirths.Value
-        local strengthTarget = 5000 + (rebirths * 2600)
+        local strengthTarget = 5000 + (rebirths * 2550)
 
         while isRunning and player.leaderstats.Strength.Value < strengthTarget do
             local repsToDo = player.MembershipType == Enum.MembershipType.Premium and 8 or 14
@@ -745,7 +745,7 @@ task.spawn(function()
             projectedDurabilityLabel.Text = "Durability Pace: " .. formatNumber(durabilityPerHour) .. "/Hour | " .. formatNumber(projectedDurability) .. "/Day"
         end
 
-        task.wait(0.05)
+        task.wait(0.01)
     end
 end)
 
