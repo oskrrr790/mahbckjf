@@ -740,9 +740,9 @@ task.spawn(function()
             local projectedStrength = math.floor(strengthPerSecond * secondsPerDay)
             local projectedDurability = math.floor(durabilityPerSecond * secondsPerDay)
 
-            projectedRebirthsLabel.Text = "Rebirth Pace: " .. formatNumber(rebirthsPerHour) .. "/h | " .. formatNumber(projectedRebirths) .. "/24h"
-            projectedStrengthLabel.Text = "Strength Pace: " .. formatNumber(strengthPerHour) .. "/h | " .. formatNumber(projectedStrength) .. "/24h"
-            projectedDurabilityLabel.Text = "Durability Pace: " .. formatNumber(durabilityPerHour) .. "/h | " .. formatNumber(projectedDurability) .. "/24h"
+            projectedRebirthsLabel.Text = "Rebirth Pace: " .. formatNumber(rebirthsPerHour) .. "/Hour | " .. formatNumber(projectedRebirths) .. "/Day"
+            projectedStrengthLabel.Text = "Strength Pace: " .. formatNumber(strengthPerHour) .. "/Hour | " .. formatNumber(projectedStrength) .. "/Day"
+            projectedDurabilityLabel.Text = "Durability Pace: " .. formatNumber(durabilityPerHour) .. "/Hour | " .. formatNumber(projectedDurability) .. "/Day"
         end
 
         task.wait(0.05)
