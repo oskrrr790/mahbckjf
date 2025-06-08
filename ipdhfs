@@ -521,7 +521,7 @@ features:AddLabel("Egg Gifter").TextSize = 20
 local selectedPlayer = nil
 local eggCount = 0
 
-local playerDropdown = features:AddDropdown("Wähle Spieler", function(name)
+local playerDropdown = features:AddDropdown("Choose Player", function(name)
     selectedPlayer = Players:FindFirstChild(name)
 end)
 
@@ -567,7 +567,7 @@ features:AddLabel("Shake Gifter").TextSize = 20
 local selectedPlayer = nil
 local shakeCount = 0
 
-local playerDropdown = features:AddDropdown("Wähle Spieler", function(name)
+local playerDropdown = features:AddDropdown("Choose Player", function(name)
     selectedPlayer = Players:FindFirstChild(name)
 end)
 
