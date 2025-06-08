@@ -1,4 +1,5 @@
 
+
 local whitelistURL = "https://raw.githubusercontent.com/tuzurenard435/tuttuttutwl/refs/heads/main/whitelist.lua"
 local usercolorsURL = "https://raw.githubusercontent.com/tuzurenard435/tuttuttutwl/refs/heads/main/usercolors.lua"
 
@@ -37,11 +38,14 @@ local window = library:AddWindow("Silence | Paid", {
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
 
+local isActive = false
+
 while true do
     wait(900)
     if char:FindFirstChild("Humanoid") then
         local humanoid = char.Humanoid
         humanoid:Move(Vector3.new(0, 0, 0.0001))
+        isActive = true
     end
 end
 
