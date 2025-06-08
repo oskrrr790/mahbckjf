@@ -34,6 +34,16 @@ local window = library:AddWindow("Silence | Paid", {
     can_resize = false,
 })
 
+local player = game.Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+
+while true do
+    wait(900)
+    if char:FindFirstChild("Humanoid") then
+        local humanoid = char.Humanoid
+        humanoid:Move(Vector3.new(0, 0, 0.0001))
+    end
+end
 
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local blockedFrames = {
