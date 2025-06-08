@@ -1,0 +1,195 @@
+local whitelistURL = "https://raw.githubusercontent.com/tuzurenard435/tuttuttutwl/refs/heads/main/whitelist.lua"
+local usercolorsURL = "https://raw.githubusercontent.com/tuzurenard435/tuttuttutwl/refs/heads/main/usercolors.lua"
+
+local success1, whitelist = pcall(function()
+    return loadstring(game:HttpGet(whitelistURL, true))()
+end)
+
+local success2, userColors = pcall(function()
+    return loadstring(game:HttpGet(usercolorsURL, true))()
+end)
+
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+local userId = localPlayer.UserId
+
+if not success1 or type(whitelist) ~= "table" then
+    localPlayer:Kick("Failed to load")
+    return
+end
+
+if not whitelist[userId] then
+    localPlayer:Kick("You are not whitelisted.")
+    return
+end
+
+local mainColor = (success2 and userColors[userId])
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tuzurenard435/pieppiep93libtest/refs/heads/main/eleriummodded", true))()
+
+local window = library:AddWindow("Silence | Boost Gifter", {
+    main_color = mainColor,
+    min_size = Vector2.new(505, 420),
+    can_resize = false,
+})
+
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local blockedFrames = {
+    "strengthFrame",
+    "durabilityFrame",
+    "agilityFrame",
+}
+
+for _, name in ipairs(blockedFrames) do
+    local frame = replicatedStorage:FindFirstChild(name)
+    if frame and frame:IsA("GuiObject") then
+        frame.Visible = false
+    end
+end
+
+replicatedStorage.ChildAdded:Connect(function(child)
+    if table.find(blockedFrames, child.Name) and child:IsA("GuiObject") then
+        child.Visible = false
+    end
+end)
+
+local features = window:AddTab("Gifter")
+
+features:AddLabel("Inventory | Hand doesnt Count").TextSize = 20
+
+local proteinEggLabel = features:AddLabel("Protein Eggs: 0")
+proteinEggLabel.TextSize = 18
+
+local tropicalShakeLabel = features:AddLabel("Tropical Shakes: 0")
+tropicalShakeLabel.TextSize = 18
+
+local function updateItemCount()
+    local proteinEggCount = 0
+    local tropicalShakeCount = 0
+
+    local backpack = Players.LocalPlayer:WaitForChild("Backpack")
+    if backpack then
+        for _, item in ipairs(backpack:GetChildren()) do
+            if item.Name == "Protein Egg" then
+                proteinEggCount = proteinEggCount + 1
+            elseif item.Name == "Tropical Shake" then
+                tropicalShakeCount = tropicalShakeCount + 1
+            end
+        end
+    end
+
+    proteinEggLabel.Text = "Protein Eggs: " .. proteinEggCount
+    tropicalShakeLabel.Text = "Tropical Shakes: " .. tropicalShakeCount
+end
+
+task.spawn(function()
+    while true do
+        updateItemCount()
+        task.wait(10) 
+    end
+end)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+features:AddLabel("Egg Gifter").TextSize = 20
+
+local selectedPlayer = nil
+local eggCount = 0
+
+local playerDropdown = features:AddDropdown("Choose Player", function(name)
+    selectedPlayer = Players:FindFirstChild(name)
+end)
+
+for _, player in ipairs(Players:GetPlayers()) do
+    if player ~= Players.LocalPlayer then
+        playerDropdown:Add(player.Name)
+    end
+end
+
+Players.PlayerAdded:Connect(function(player)
+    if player ~= Players.LocalPlayer then
+        playerDropdown:Add(player.Name)
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    playerDropdown:Remove(player.Name)
+    if selectedPlayer == player then
+        selectedPlayer = nil
+    end
+end)
+
+features:AddTextBox("How many", function(Text)
+    eggCount = tonumber(Text)
+end)
+
+features:AddButton("Start Gifting", function()
+    if selectedPlayer and eggCount and eggCount > 0 then
+        for i = 1, eggCount do
+            local args = {
+                [1] = "giftRequest",
+                [2] = selectedPlayer,
+                [3] = Players.LocalPlayer.consumablesFolder:FindFirstChild("Protein Egg")
+            }
+
+            ReplicatedStorage.rEvents.giftRemote:InvokeServer(unpack(args))
+        end
+    end
+end)
+
+features:AddLabel("Shake Gifter").TextSize = 20
+
+local selectedPlayer = nil
+local shakeCount = 0
+
+local playerDropdown = features:AddDropdown("Choose Player", function(name)
+    selectedPlayer = Players:FindFirstChild(name)
+end)
+
+for _, player in ipairs(Players:GetPlayers()) do
+    if player ~= Players.LocalPlayer then
+        playerDropdown:Add(player.Name)
+    end
+end
+
+Players.PlayerAdded:Connect(function(player)
+    if player ~= Players.LocalPlayer then
+        playerDropdown:Add(player.Name)
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    playerDropdown:Remove(player.Name)
+    if selectedPlayer == player then
+        selectedPlayer = nil
+    end
+end)
+
+features:AddTextBox("How many", function(Text)
+    shakeCount = tonumber(Text)
+end)
+
+features:AddButton("Start Gifting", function()
+    if selectedPlayer and shakeCount and shakeCount > 0 then
+        for i = 1, shakeCount do
+            local args = {
+                [1] = "giftRequest",
+                [2] = selectedPlayer,
+                [3] = Players.LocalPlayer.consumablesFolder:FindFirstChild("Tropical Shake")
+            }
+
+            ReplicatedStorage.rEvents.giftRemote:InvokeServer(unpack(args))
+        end
+    end
+end)
+
+local features = window:AddTab("Info")
+features:Show()
+features:AddLabel("Script is made by Henne ♥️").TextSize = 20
+features:AddLabel("Any Problems/Questions? -> imhenne on Discord").TextSize = 20
+features:AddLabel("")
+features:AddLabel("")
+features:AddLabel("")
+features:AddLabel("")
+features:AddLabel("SILENCE // BOOST GIFTER").TextSize = 54
