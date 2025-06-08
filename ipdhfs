@@ -745,7 +745,7 @@ task.spawn(function()
             projectedDurabilityLabel.Text = "Durability Pace: " .. formatNumber(durabilityPerHour) .. "/Hour | " .. formatNumber(projectedDurability) .. "/Day"
         end
 
-        task.wait(0.01)
+        task.wait(0.0001)
     end
 end)
 
