@@ -538,7 +538,7 @@ task.spawn(function()
     while true do
         if running then
             activateItems()
-            task.wait(0.2)
+            task.wait(0.6)
         else
             task.wait(1)
         end
@@ -743,7 +743,7 @@ task.spawn(function()
             projectedDurabilityLabel.Text = "Durability Pace: " .. formatNumber(durabilityPerHour) .. "/Hour | " .. formatNumber(projectedDurability) .. "/Day"
         end
 
-        task.wait(0.0001)
+        task.wait(0.05)
     end
 end)
 
