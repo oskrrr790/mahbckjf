@@ -1,5 +1,3 @@
-
-
 local whitelistURL = "https://raw.githubusercontent.com/tuzurenard435/tuttuttutwl/refs/heads/main/whitelist.lua"
 local usercolorsURL = "https://raw.githubusercontent.com/tuzurenard435/tuttuttutwl/refs/heads/main/usercolors.lua"
 
@@ -379,6 +377,35 @@ features:Show()
 
 features:AddLabel("Misc").TextSize = 20
 
+local virtualUser = game:GetService("VirtualUser")
+local players = game:GetService("Players")
+local connection
+
+function enableAntiAFK()
+    if connection then return end
+    connection = players.LocalPlayer.Idled:Connect(function()
+        virtualUser:CaptureController()
+        virtualUser:ClickButton2(Vector2.new())
+    end)
+end
+
+function disableAntiAFK()
+    if connection then
+        connection:Disconnect()
+        connection = nil
+    end
+end
+
+local switch = features:AddSwitch("Anti-AFK", function(enabled)
+    if enabled then
+        enableAntiAFK()
+    else
+        disableAntiAFK()
+    end
+end)
+
+switch:Set(true)
+
 local switch = features:AddSwitch("Auto Lift (Slow its the Gamepass)", function(bool)
     local player = game:GetService("Players").LocalPlayer
     if player:FindFirstChild("autoLiftEnabled") then
@@ -510,7 +537,6 @@ local itemList = {
     "Energy Bar"
 }
 
--- Konvertiert z. B. "Protein Bar" → "proteinBar"
 local function formatEventName(itemName)
     local parts = {}
     for word in itemName:gmatch("%S+") do
@@ -526,7 +552,7 @@ local function activateItems()
     for _, itemName in ipairs(itemList) do
         local tool = player.Character:FindFirstChild(itemName) or player.Backpack:FindFirstChild(itemName)
         if tool then
-            local eventName = formatEventName(itemName) -- z. B. "Protein Bar" → "proteinBar"
+            local eventName = formatEventName(itemName) 
             muscleEvent:FireServer(eventName, tool)
         end
     end
