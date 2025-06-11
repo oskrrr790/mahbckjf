@@ -378,6 +378,34 @@ features:Show()
 
 features:AddLabel("Misc").TextSize = 20
 
+local virtualUser = game:GetService("VirtualUser")
+local players = game:GetService("Players")
+local connection
+
+function enableAntiAFK()
+    if connection then return end
+    connection = players.LocalPlayer.Idled:Connect(function()
+        virtualUser:CaptureController()
+        virtualUser:ClickButton2(Vector2.new())
+    end)
+end
+
+function disableAntiAFK()
+    if connection then
+        connection:Disconnect()
+        connection = nil
+    end
+end
+
+local switch = features:AddSwitch("Anti-AFK", function(enabled)
+    if enabled then
+        enableAntiAFK()
+    else
+        disableAntiAFK()
+    end
+end)
+switch:Set(true)
+
 local switch = features:AddSwitch("Auto Lift (Slow its the Gamepass)", function(bool)
     local player = game:GetService("Players").LocalPlayer
     if player:FindFirstChild("autoLiftEnabled") then
