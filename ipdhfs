@@ -127,6 +127,48 @@ local switch = features:AddSwitch("Fast Rebirth", function(bool)
     end
 end)
 
+local running = false
+local thread = nil
+
+local switch = features:AddSwitch("Set Size 1", function(bool)
+    running = bool
+    if running then
+        thread = coroutine.create(function()
+            while running do
+                game:GetService("ReplicatedStorage").rEvents.changeSpeedSizeRemote:InvokeServer("changeSize", 1)
+                wait(0.01)
+            end
+        end)
+        coroutine.resume(thread)
+    end
+end)
+switch:Set(false)
+
+local lockRunning = false
+local lockThread = nil
+
+local lockSwitch = features:AddSwitch("Lock Position", function(state)
+    lockRunning = state
+    if lockRunning then
+        local player = game.Players.LocalPlayer
+        local char = player.Character or player.CharacterAdded:Wait()
+        local hrp = char:WaitForChild("HumanoidRootPart")
+        local lockPosition = hrp.Position
+
+        lockThread = coroutine.create(function()
+            while lockRunning do
+                hrp.Velocity = Vector3.new(0, 0, 0)
+                hrp.RotVelocity = Vector3.new(0, 0, 0)
+                hrp.CFrame = CFrame.new(lockPosition)
+                wait(0.05) 
+            end
+        end)
+
+        coroutine.resume(lockThread)
+    end
+end)
+lockSwitch:Set(false)
+
 features:AddLabel("Pets").TextSize = 20
 
 local switch = features:AddSwitch("Show Pets", function(bool)
